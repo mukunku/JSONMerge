@@ -12,7 +12,7 @@ The project was written in C# using Visual Studio 2013 and .NET 4.5
 If you'd like to build the project yourself you only need to download the src folder.
 
 # Summary
-This is a quick and dirty utility that I created in order to easily figure out the Schema for multiple structured JSON objects. 
+This is a quick and dirty utility that I created in order to easily figure out the common schema for multiple structured JSON objects. 
 
 The problem that made me create this was that I would receive a collection of JSON data where not all the objects had every possible field (which makes sense from a record size perspective). Or some fields were null for some objects while not for others. So it was difficult to figure out what possible fields and field types I should expect while processing such data.
 
