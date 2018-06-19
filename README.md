@@ -1,6 +1,8 @@
 # JSONMerge
 Windows utility to analyze &amp; merge multiple JSON objects to generate one final "master" JSON object with all possible fields
 
+![Main UI](https://github.com/mukunku/JSONMerge/blob/master/wiki_images/main_screenshot.png)
+
 # Download
 If you'd like to use a pre-compiled EXE instead of compiling the project yourself, please see the release folder: https://github.com/mukunku/JSONMerge/tree/master/release
 
