@@ -265,7 +265,7 @@ namespace JSONMerge
             }
             catch(Exception ex)
             {
-                this.resultTextBox.Text = string.Format("Encountered an error while processing record no: {0}{1}{2}", this.numberOfRecordsRead, Environment.NewLine, ex.ToString());
+                this.resultTextBox.Text = string.Format("Encountered an error while processing record no: {0}{1}{2}", this.numberOfRecordsRead + 1, Environment.NewLine, ex.ToString());
             }
         }
 
