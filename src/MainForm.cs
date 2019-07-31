@@ -21,7 +21,7 @@ namespace JSONMerge
         {
             if (this.mainFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                this.filePathTextBox.Text = this.mainFileDialog.FileName;
+                this.filePathTextBox.Text = this.mainFileDialog.FileName; 
             }
         }
 
