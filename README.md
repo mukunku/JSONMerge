@@ -7,7 +7,7 @@ This utility can process a `.json` file containing an array of objects by analyz
 <img width="325" height="334" alt="image" src="https://github.com/user-attachments/assets/3e70c6a0-6f63-4eb7-8337-2f6c9c6c6738" />
 
 # Download
-Releases can be found here: https://github.com/mukunku/ParquetViewer/releases
+Releases can be found here: https://github.com/mukunku/JSONMerge/releases
 
 Test file: [JSONMerge_ExampleSourceFile.json](https://github.com/mukunku/JSONMerge/blob/main/data/JSONMerge_ExampleSourceFile.json)
 
