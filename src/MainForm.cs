@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,12 +15,12 @@ namespace JSONMerge
         public MainForm()
         {
             InitializeComponent();
-            this.Icon = JSONMerge.Properties.Resources.jsonicon;
+            this.Icon = Properties.Resources.jsonicon;
         }
 
         private void openFileButton_Click(object sender, EventArgs e)
         {
-            if (this.mainFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (this.mainFileDialog.ShowDialog() == DialogResult.OK)
             {
                 this.filePathTextBox.Text = this.mainFileDialog.FileName;
             }
@@ -29,7 +30,6 @@ namespace JSONMerge
         {
             this.mergeButton.Enabled = false;
             this.openFileButton.Enabled = false;
-            this.recordSeperatorTextBox.Enabled = false;
             this.filePathTextBox.Enabled = false;
             this.numberOfRecordsRead = 0;
             try
@@ -40,18 +40,8 @@ namespace JSONMerge
                 {
                     if (File.Exists(filePath))
                     {
-                        string delimiter = this.recordSeperatorTextBox.Text;
-                        if (!string.IsNullOrWhiteSpace(delimiter))
-                        {
-                            delimiter = delimiter.Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\t", "\t");
-
-                            var fileDetailsArg = new FileDetailsArg(filePath, delimiter);
-                            this.readFileBackgroundWorker.RunWorkerAsync(fileDetailsArg);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please enter a record seperator (Example: \\r\\n)", "Invalid Seperator");
-                        }
+                        var fileDetailsArg = new FileDetailsArg(filePath);
+                        this.readFileBackgroundWorker.RunWorkerAsync(fileDetailsArg);
                     }
                     else
                     {
@@ -66,12 +56,13 @@ namespace JSONMerge
             catch (Exception ex)
             {
                 this.resultTextBox.Text = string.Concat("Could not start processing the file.", Environment.NewLine, ex.ToString());
-
+            }
+            finally
+            {
                 if (!this.readFileBackgroundWorker.IsBusy)
                 {
                     this.mergeButton.Enabled = true;
                     this.openFileButton.Enabled = true;
-                    this.recordSeperatorTextBox.Enabled = true;
                     this.filePathTextBox.Enabled = true;
                 }
             }
@@ -155,7 +146,7 @@ namespace JSONMerge
                             var jObject = new JObject();
                             masterArray.Add(jObject);
 
-                            foreach(JObject currentObject in currentArray)
+                            foreach (JObject currentObject in currentArray)
                             {
                                 this.MapJObjectToMaster(jObject, currentObject);
                             }
@@ -215,24 +206,37 @@ namespace JSONMerge
             try
             {
                 var args = (FileDetailsArg)e.Argument;
+                var fileContents = File.ReadAllText(args.FilePath);
+
+                JToken fileContentsJToken;
+                try
+                {
+                    fileContentsJToken = JToken.Parse(fileContents);
+                }
+                catch(JsonReaderException)
+                {
+                    throw new InvalidDataException("The file contents are not valid JSON. Expected array of objects.");
+                }
+                catch
+                {
+                    throw;
+                }
+
+                if (fileContentsJToken.Type != JTokenType.Array)
+                    throw new NotSupportedException("The file contents must be a JSON array of objects");
 
                 JObject masterJObject = new JObject();
-                using (StreamReader reader = new StreamReader(args.FilePath))
+                int recordCount = 0;
+                foreach (JObject jObject in fileContentsJToken)
                 {
-                    int recordCount = 0;
-                    IEnumerable<string> fileEnumerator = reader.ReadUntil(args.Delimiter);
-                    foreach (string rawJson in fileEnumerator)
-                    {
-                        JObject jObject = JObject.Parse(rawJson);
-                        this.MapJObjectToMaster(masterJObject, jObject);
+                    this.MapJObjectToMaster(masterJObject, jObject);
 
-                        ((BackgroundWorker)sender).ReportProgress(++recordCount);
-                    }
+                    ((BackgroundWorker)sender).ReportProgress(++recordCount);
                 }
 
                 e.Result = masterJObject;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 e.Result = ex;
             }
@@ -250,7 +254,6 @@ namespace JSONMerge
             {
                 this.mergeButton.Enabled = true;
                 this.openFileButton.Enabled = true;
-                this.recordSeperatorTextBox.Enabled = true;
                 this.filePathTextBox.Enabled = true;
 
                 if (e.Result is Exception)
@@ -263,9 +266,9 @@ namespace JSONMerge
                     this.resultTextBox.Text = result.ToString();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                this.resultTextBox.Text = string.Format("Encountered an error while processing record no: {0}{1}{2}", this.numberOfRecordsRead + 1, Environment.NewLine, ex.ToString());
+                this.resultTextBox.Text = string.Format("Encountered an error while processing record no: {0}{1}{1}{2}", this.numberOfRecordsRead + 1, Environment.NewLine, ex.Message);
             }
         }
 

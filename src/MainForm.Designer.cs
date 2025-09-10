@@ -32,8 +32,6 @@
             this.openFileButton = new System.Windows.Forms.Button();
             this.filePathTextBox = new System.Windows.Forms.TextBox();
             this.mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.recordSeperatorLabel = new System.Windows.Forms.Label();
-            this.recordSeperatorTextBox = new System.Windows.Forms.TextBox();
             this.resultTextBox = new System.Windows.Forms.TextBox();
             this.mergeButton = new System.Windows.Forms.Button();
             this.readFileBackgroundWorker = new System.ComponentModel.BackgroundWorker();
@@ -43,6 +41,7 @@
             // 
             // mainFileDialog
             // 
+            this.mainFileDialog.Filter = "JSON files|*.json";
             this.mainFileDialog.SupportMultiDottedExtensions = true;
             // 
             // openFileButton
@@ -75,43 +74,18 @@
             this.mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.mainLayoutPanel.Controls.Add(this.openFileButton, 0, 0);
             this.mainLayoutPanel.Controls.Add(this.filePathTextBox, 1, 0);
-            this.mainLayoutPanel.Controls.Add(this.recordSeperatorLabel, 0, 1);
-            this.mainLayoutPanel.Controls.Add(this.recordSeperatorTextBox, 1, 1);
-            this.mainLayoutPanel.Controls.Add(this.resultTextBox, 0, 3);
-            this.mainLayoutPanel.Controls.Add(this.mergeButton, 0, 2);
+            this.mainLayoutPanel.Controls.Add(this.resultTextBox, 0, 2);
+            this.mainLayoutPanel.Controls.Add(this.mergeButton, 0, 1);
             this.mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.mainLayoutPanel.Name = "mainLayoutPanel";
-            this.mainLayoutPanel.RowCount = 4;
-            this.mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.mainLayoutPanel.RowCount = 3;
             this.mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.mainLayoutPanel.Size = new System.Drawing.Size(284, 262);
             this.mainLayoutPanel.TabIndex = 2;
-            // 
-            // recordSeperatorLabel
-            // 
-            this.recordSeperatorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.recordSeperatorLabel.AutoSize = true;
-            this.recordSeperatorLabel.Location = new System.Drawing.Point(3, 30);
-            this.recordSeperatorLabel.Name = "recordSeperatorLabel";
-            this.recordSeperatorLabel.Size = new System.Drawing.Size(94, 30);
-            this.recordSeperatorLabel.TabIndex = 2;
-            this.recordSeperatorLabel.Text = "Record Seperator:";
-            this.recordSeperatorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // recordSeperatorTextBox
-            // 
-            this.recordSeperatorTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.recordSeperatorTextBox.Location = new System.Drawing.Point(103, 33);
-            this.recordSeperatorTextBox.Name = "recordSeperatorTextBox";
-            this.recordSeperatorTextBox.Size = new System.Drawing.Size(79, 20);
-            this.recordSeperatorTextBox.TabIndex = 3;
-            this.recordSeperatorTextBox.Text = "\\r\\n";
             // 
             // resultTextBox
             // 
@@ -119,11 +93,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainLayoutPanel.SetColumnSpan(this.resultTextBox, 2);
-            this.resultTextBox.Location = new System.Drawing.Point(3, 93);
+            this.resultTextBox.Location = new System.Drawing.Point(3, 63);
             this.resultTextBox.Multiline = true;
             this.resultTextBox.Name = "resultTextBox";
             this.resultTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.resultTextBox.Size = new System.Drawing.Size(278, 166);
+            this.resultTextBox.Size = new System.Drawing.Size(278, 196);
             this.resultTextBox.TabIndex = 4;
             this.resultTextBox.Text = "Merged results will be shown here...";
             this.resultTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.resultTextBox_KeyDown);
@@ -134,7 +108,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainLayoutPanel.SetColumnSpan(this.mergeButton, 2);
-            this.mergeButton.Location = new System.Drawing.Point(3, 63);
+            this.mergeButton.Location = new System.Drawing.Point(3, 33);
             this.mergeButton.Name = "mergeButton";
             this.mergeButton.Size = new System.Drawing.Size(278, 24);
             this.mergeButton.TabIndex = 5;
@@ -179,8 +153,6 @@
         private System.Windows.Forms.Button openFileButton;
         private System.Windows.Forms.TextBox filePathTextBox;
         private System.Windows.Forms.TableLayoutPanel mainLayoutPanel;
-        private System.Windows.Forms.Label recordSeperatorLabel;
-        private System.Windows.Forms.TextBox recordSeperatorTextBox;
         private System.Windows.Forms.TextBox resultTextBox;
         private System.Windows.Forms.Button mergeButton;
         private System.ComponentModel.BackgroundWorker readFileBackgroundWorker;
